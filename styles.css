@@ -1,77 +1,109 @@
 body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(120deg, #ffffff, #e9ebf0);
-      font-family: 'Inter', sans-serif;
-    }
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+}
 
-    .box {
-      width: 420px;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      position: relative;
-    }
+.box {
+  width: 420px;
+  max-width: 100%;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
 
-    h1 {
-      margin-bottom: 10px;
-      font-size: 48px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: #111;
-    }
+h1 {
+  margin-bottom: 10px;
+  font-size: 48px;
+  font-weight: 800;
+  color: #111;
+}
 
-    h3 {
-      margin: 0 0 20px 0;
-      font-size: 20px;
-      font-weight: 400;
-      color: #333;
-    }
+h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 400;
+  color: #333;
+}
 
-    textarea {
-      width: 100%;
-      height: 160px;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      font-family: inherit;
-      outline: none;
-      transition: 0.2s;
-    }
-    textarea:focus {
-      border-color: #000;
-      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-    }
+textarea {
+  width: 100%;
+  height: 160px;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: 0.2s;
+  resize: none; /* Prevent manual resizing */
+  overflow-y: auto; /* Controls overflow properly */
+}
+textarea:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
 
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #111;
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #000;
-      transform: translateY(-2px);
-    }
+.verify-btn,
+.copy-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    footer {
-      margin-top: 40px;
-      font-size: 16px;
-      color: #555;
-      opacity: 0.8;
-    }
+.verify-btn:hover,
+.copy-btn:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+.copy-btn {
+  margin-top: 10px;
+  background: #444;
+}
+.copy-btn:hover {
+  background: #333;
+}
+
+footer {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #555;
+  opacity: 0.8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .box {
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  textarea {
+    height: 140px;
+  }
+}
