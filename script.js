@@ -32,6 +32,7 @@ function copyText() {
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector(".copy-btn");
     const original = btn.textContent;
+    console.log("Text copied to clipboard");
 
     btn.textContent = "Copied!";
     btn.style.transform = "scale(1.05)";
