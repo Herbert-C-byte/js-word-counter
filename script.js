@@ -1,7 +1,15 @@
 function animateValue(id, start, end, duration, suffix = "") {
+  
+  // Evita animação impossível (divisão por zero)
+  if (start === end) {
+    document.getElementById(id).textContent = end + suffix;
+    return;
+  }
+
   const obj = document.getElementById(id);
   const range = end - start;
-  const stepTime = Math.abs(Math.floor(duration / range)) || 20;
+  // Garante tempo mínimo entre updates
+  const stepTime = Math.max(duration / Math.abs(range), 15);
   let current = start;
   const increment = end > start ? 1 : -1;
 
@@ -16,15 +24,15 @@ function animateValue(id, start, end, duration, suffix = "") {
 function countAll() {
   const text = document.getElementById("input").value.trim();
 
-  const wordCount = text === "" ? 0 : text.split(/\s+/).length;
+  const wordCount = text === "" ? 0 : text.split(/\s+/).filter(w => w.length > 0).length;
   const charCount = text.length;
 
   // Get current numbers to animate smoothly
-  const currentWords = parseInt(document.getElementById("wordCount").textContent);
-  const currentChars = parseInt(document.getElementById("charCount").textContent);
+  const currentWords = parseInt(document.getElementById("wordCount").textContent) || 0;
+  const currentChars = parseInt(document.getElementById("charCount").textContent) || 0;
 
-  animateValue("wordCount", currentWords, wordCount, 400, " Words");
-  animateValue("charCount", currentChars, charCount, 400, " Characters");
+  animateValue("wordCount", currentWords, wordCount, 10, " Words");
+  animateValue("charCount", currentChars, charCount, 10, " Characters");
 }
 
 function copyText() {
