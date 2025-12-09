@@ -12,6 +12,7 @@ function animateValue(id, start, end, duration, suffix = "") {
   const stepTime = Math.max(duration / Math.abs(range), 15);
   let current = start;
   const increment = end > start ? 1 : -1;
+  console.log("This is working")
 
   const timer = setInterval(() => {
     current += increment;
@@ -26,6 +27,7 @@ function countAll() {
 
   const wordCount = text === "" ? 0 : text.split(/\s+/).filter(w => w.length > 0).length;
   const charCount = text.length;
+  console.log("This is working")
 
   // Get current numbers to animate smoothly
   const currentWords = parseInt(document.getElementById("wordCount").textContent) || 0;
