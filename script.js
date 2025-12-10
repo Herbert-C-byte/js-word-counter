@@ -9,7 +9,7 @@ function animateValue(id, start, end, duration, suffix = "") {
   const obj = document.getElementById(id);
   const range = end - start;
   // Garante tempo mínimo entre updates
-  const stepTime = Math.max(duration / Math.abs(range), 15);
+  const stepTime = Math.max(duration / Math.abs(range), 10);
   let current = start;
   const increment = end > start ? 1 : -1;
   console.log("This is working")
@@ -27,7 +27,7 @@ function countAll() {
 
   const wordCount = text === "" ? 0 : text.split(/\s+/).filter(w => w.length > 0).length;
   const charCount = text.length;
-  console.log("This is working")
+ 
 
   // Get current numbers to animate smoothly
   const currentWords = parseInt(document.getElementById("wordCount").textContent) || 0;
@@ -45,7 +45,7 @@ function copyText() {
     console.log("Text copied to clipboard");
 
     btn.textContent = "Copied!";
-    btn.style.transform = "scale(1.05)";
+    btn.style.transform = "scale(1.08)";
     btn.style.background = "#0a0";
 
     setTimeout(() => {
