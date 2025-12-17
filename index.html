@@ -11,18 +11,34 @@
 </head>
 
 <body>
-  <div class="box">
-    <h1 id="wordCount">0 Words</h1>
-    <h2 id="charCount">0 Characters</h2>
+  <header class="site-header">
+    <h1>Word Counter</h1>
+  </header>
 
-    <textarea id="input" placeholder="Type your text here..."></textarea>
+  <main class="container">
+    <section class="box" aria-label="Word counter">
+      <div class="stats" role="status">
+        <div class="stat">
+          <div class="num" id="wordCount">0</div>
+          <div class="label">Words</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="charCount">0</div>
+          <div class="label">Characters</div>
+        </div>
+      </div>
 
-    <button class="verify-btn" onclick="countAll()">Verify</button>
+      <label for="input" class="sr-only">Text input</label>
+      <textarea id="input" placeholder="Type or paste your text here..." aria-label="Text input"></textarea>
 
-    <button class="copy-btn" onclick="copyText()">Copy Text</button>
-    
-  </div>
-  
+      <div class="controls">
+        <button class="verify-btn" id="verifyBtn">Count</button>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+        <button class="clear-btn" id="clearBtn">Clear</button>
+      </div>
+    </section>
+  </main>
+
   <footer>
     © Herbert — Crafted because I was really bored.
   </footer>
