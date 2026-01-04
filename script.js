@@ -1,6 +1,10 @@
 const input = document.getElementById('input');
 const wordCountEl = document.getElementById('wordCount');
 const charCountEl = document.getElementById('charCount');
+const sentenceCountEl = document.getElementById('sentenceCount');
+const paragraphCountEl = document.getElementById('paragraphCount');
+const avgWordLengthEl = document.getElementById('avgWordLength');
+const avgSentenceLengthEl = document.getElementById('avgSentenceLength');
 const verifyBtn = document.getElementById('verifyBtn');
 const copyBtn = document.getElementById('copyBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -8,7 +12,20 @@ const clearBtn = document.getElementById('clearBtn');
 function getCounts(text){
   const chars = text.length;
   const words = text.trim() === '' ? 0 : (text.match(/\b\S+\b/g) || []).length;
-  return { words, chars };
+  
+  // Sentences: split by period, exclamation, or question mark
+  const sentences = text.trim() === '' ? 0 : (text.match(/[.!?]+/g) || []).length;
+  
+  // Paragraphs: split by double newlines or single newlines
+  const paragraphs = text.trim() === '' ? 0 : text.trim().split(/\n\n+|\n/).filter(p => p.trim().length > 0).length;
+  
+  // Average word length
+  const avgWordLength = words === 0 ? 0 : (chars / words).toFixed(2);
+  
+  // Average sentence length
+  const avgSentenceLength = sentences === 0 ? 0 : (words / sentences).toFixed(2);
+  
+  return { words, chars, sentences, paragraphs, avgWordLength, avgSentenceLength };
 }
 
 function animateValue(el, start, end, duration = 300){
@@ -28,11 +45,17 @@ function animateValue(el, start, end, duration = 300){
 
 function updateCounts(){
   const text = input.value || '';
-  const { words, chars } = getCounts(text);
+  const { words, chars, sentences, paragraphs, avgWordLength, avgSentenceLength } = getCounts(text);
   const curWords = parseInt(wordCountEl.textContent) || 0;
   const curChars = parseInt(charCountEl.textContent) || 0;
+  const curSentences = parseInt(sentenceCountEl.textContent) || 0;
+  const curParagraphs = parseInt(paragraphCountEl.textContent) || 0;
   animateValue(wordCountEl, curWords, words, 300);
   animateValue(charCountEl, curChars, chars, 300);
+  animateValue(sentenceCountEl, curSentences, sentences, 300);
+  animateValue(paragraphCountEl, curParagraphs, paragraphs, 300);
+  avgWordLengthEl.textContent = avgWordLength;
+  avgSentenceLengthEl.textContent = avgSentenceLength;
 }
 
 function debounce(fn, wait = 220){
