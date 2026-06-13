@@ -5,6 +5,8 @@ A small, responsive word & character counter with live updates, accessible marku
 ## Features
 
 - Live word and character counts (debounced for performance)
+- Text statistics: sentences, paragraphs, average word length, average sentence length
+- Reading time estimate based on 200 words per minute
 - Animated counters for smooth updates
 - Autosizing textarea with max-height based on viewport
 - Copy and Clear buttons with visual feedback
