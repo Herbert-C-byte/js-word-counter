@@ -9,6 +9,14 @@ const readingTimeEl = document.getElementById("readingTime");
 const verifyBtn = document.getElementById("verifyBtn");
 const copyBtn = document.getElementById("copyBtn");
 const clearBtn = document.getElementById("clearBtn");
+const upperBtn = document.getElementById("upperBtn");
+const lowerBtn = document.getElementById("lowerBtn");
+const titleBtn = document.getElementById("titleBtn");
+const freqBtn = document.getElementById("freqBtn");
+const exportBtn = document.getElementById("exportBtn");
+const pasteBtn = document.getElementById("pasteBtn");
+const themeToggle = document.getElementById("themeToggle");
+const freqResultsEl = document.getElementById("freqResults");
 
 function getCounts(text) {
   const chars = text.length;
@@ -49,6 +57,71 @@ function getCounts(text) {
     avgSentenceLength,
     readingTime,
   };
+}
+
+// Transformations: simple whole-text transforms
+function transformText(mode) {
+  if (!input) return;
+  let v = input.value || "";
+  if (mode === "upper") v = v.toUpperCase();
+  if (mode === "lower") v = v.toLowerCase();
+  if (mode === "title")
+    v = v.toLowerCase().replace(/(^|\s)\S/g, (s) => s.toUpperCase());
+  input.value = v;
+  autosize();
+  updateCounts();
+}
+
+function getTopWords(text, limit = 10) {
+  const words = (text.match(/\b\S+\b/g) || [])
+    .map((w) => w.toLowerCase().replace(/[^a-z0-9']/g, ""))
+    .filter(Boolean);
+  const freq = {};
+  for (const w of words) freq[w] = (freq[w] || 0) + 1;
+  const arr = Object.keys(freq).map((k) => ({ word: k, count: freq[k] }));
+  arr.sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
+  return arr.slice(0, limit);
+}
+
+function renderFreq(results) {
+  if (!freqResultsEl) return;
+  if (!results || results.length === 0) {
+    freqResultsEl.textContent = "No words to analyze.";
+    return;
+  }
+  const lines = results.map((r) => `${r.word} — ${r.count}`);
+  freqResultsEl.innerHTML = `<strong>Top words</strong><br>${lines.join("<br>")}`;
+}
+
+function exportText() {
+  const text = input.value || "";
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "text.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function pasteFromClipboard() {
+  try {
+    const txt = await navigator.clipboard.readText();
+    input.value = (input.value || "") + txt;
+    autosize();
+    updateCounts();
+  } catch (e) {
+    console.warn("Paste failed", e);
+  }
+}
+
+function applyTheme(dark) {
+  document.documentElement.classList.toggle("dark", dark);
+  try {
+    localStorage.setItem("wc-dark", dark ? "1" : "0");
+  } catch (e) {}
 }
 
 function animateValue(el, start, end, duration = 300) {
@@ -151,9 +224,28 @@ input.addEventListener("input", () => {
 verifyBtn && verifyBtn.addEventListener("click", updateCounts);
 copyBtn && copyBtn.addEventListener("click", copyText);
 clearBtn && clearBtn.addEventListener("click", clearText);
+upperBtn && upperBtn.addEventListener("click", () => transformText("upper"));
+lowerBtn && lowerBtn.addEventListener("click", () => transformText("lower"));
+titleBtn && titleBtn.addEventListener("click", () => transformText("title"));
+freqBtn &&
+  freqBtn.addEventListener("click", () =>
+    renderFreq(getTopWords(input.value || "", 10)),
+  );
+exportBtn && exportBtn.addEventListener("click", exportText);
+pasteBtn && pasteBtn.addEventListener("click", pasteFromClipboard);
+themeToggle &&
+  themeToggle.addEventListener("click", () => {
+    const dark = !document.documentElement.classList.contains("dark");
+    applyTheme(dark);
+  });
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   autosize();
   updateCounts();
+  try {
+    const pref = localStorage.getItem("wc-dark");
+    applyTheme(pref === "1");
+  } catch (e) {}
+  if (freqResultsEl) freqResultsEl.textContent = "";
 });

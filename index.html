@@ -13,6 +13,7 @@
 <body>
   <header class="site-header">
     <h1>Word Counter</h1>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">Theme</button>
   </header>
 
   <main class="container">
@@ -55,7 +56,15 @@
         <button class="verify-btn" id="verifyBtn">Count</button>
         <button class="copy-btn" id="copyBtn">Copy</button>
         <button class="clear-btn" id="clearBtn">Clear</button>
+        <button class="small-btn" id="upperBtn">UPPER</button>
+        <button class="small-btn" id="lowerBtn">lower</button>
+        <button class="small-btn" id="titleBtn">Title Case</button>
+        <button class="small-btn" id="freqBtn">Top Words</button>
+        <button class="small-btn" id="pasteBtn">Paste</button>
+        <button class="small-btn" id="exportBtn">Export</button>
       </div>
+
+      <div id="freqResults" class="freq-results" aria-live="polite"></div>
     </section>
   </main>
 

@@ -10,6 +10,11 @@ A small, responsive word & character counter with live updates, accessible marku
 - Animated counters for smooth updates
 - Autosizing textarea with max-height based on viewport
 - Copy and Clear buttons with visual feedback
+- Text transforms: uppercase, lowercase, title case
+- Top-word frequency analysis (Top 10)
+- Export text to a .txt file
+- Paste from clipboard button
+- Theme toggle (light / dark)
 - Responsive layout and improved accessibility
 
 ## Usage
