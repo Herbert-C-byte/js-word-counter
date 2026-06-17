@@ -17,6 +17,10 @@ const exportBtn = document.getElementById("exportBtn");
 const pasteBtn = document.getElementById("pasteBtn");
 const themeToggle = document.getElementById("themeToggle");
 const freqResultsEl = document.getElementById("freqResults");
+const statsExportBtn = document.getElementById("statsExportBtn");
+const exportOptions = document.getElementById("exportOptions");
+const exportStatsJsonBtn = document.getElementById("exportStatsJson");
+const exportStatsCsvBtn = document.getElementById("exportStatsCsv");
 
 function getCounts(text) {
   const chars = text.length;
@@ -122,6 +126,88 @@ function applyTheme(dark) {
   try {
     localStorage.setItem("wc-dark", dark ? "1" : "0");
   } catch (e) {}
+}
+
+// Ripple animation on button click
+function createRipple(e) {
+  const btn = e.currentTarget;
+  const ripple = btn.querySelector(".ripple::after");
+  if (btn.classList.contains("ripple")) {
+    btn.classList.remove("ripple");
+    void btn.offsetWidth; // reflow trigger
+  }
+  const rect = btn.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  btn.style.setProperty("--x", x + "px");
+  btn.style.setProperty("--y", y + "px");
+  btn.classList.add("ripple");
+}
+
+// Get current stats as object
+function getStats() {
+  const text = input.value || "";
+  const {
+    words,
+    chars,
+    sentences,
+    paragraphs,
+    avgWordLength,
+    avgSentenceLength,
+    readingTime,
+  } = getCounts(text);
+  return {
+    timestamp: new Date().toISOString(),
+    words,
+    characters: chars,
+    sentences,
+    paragraphs,
+    avgWordLength: parseFloat(avgWordLength),
+    avgSentenceLength: parseFloat(avgSentenceLength),
+    readingTime,
+  };
+}
+
+// Export stats as JSON
+function exportStatsJson() {
+  const stats = getStats();
+  const blob = new Blob([JSON.stringify(stats, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `stats-${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// Export stats as CSV
+function exportStatsCsv() {
+  const stats = getStats();
+  const rows = [
+    ["Metric", "Value"],
+    ["Words", stats.words],
+    ["Characters", stats.characters],
+    ["Sentences", stats.sentences],
+    ["Paragraphs", stats.paragraphs],
+    ["Average Word Length", stats.avgWordLength],
+    ["Average Sentence Length", stats.avgSentenceLength],
+    ["Reading Time", stats.readingTime],
+    ["Timestamp", stats.timestamp],
+  ];
+  const csv = rows.map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `stats-${Date.now()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 function animateValue(el, start, end, duration = 300) {
@@ -238,6 +324,26 @@ themeToggle &&
     const dark = !document.documentElement.classList.contains("dark");
     applyTheme(dark);
   });
+
+// Ripple effect on all buttons
+document
+  .querySelectorAll(
+    ".controls button, .stats-export-btn, .export-options button, .theme-toggle",
+  )
+  .forEach((btn) => {
+    btn.addEventListener("click", createRipple);
+  });
+
+// Stats export toggle and handlers
+statsExportBtn &&
+  statsExportBtn.addEventListener("click", () => {
+    exportOptions.classList.toggle("show");
+  });
+
+exportStatsJsonBtn &&
+  exportStatsJsonBtn.addEventListener("click", exportStatsJson);
+exportStatsCsvBtn &&
+  exportStatsCsvBtn.addEventListener("click", exportStatsCsv);
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
