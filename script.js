@@ -6,6 +6,10 @@ const paragraphCountEl = document.getElementById("paragraphCount");
 const avgWordLengthEl = document.getElementById("avgWordLength");
 const avgSentenceLengthEl = document.getElementById("avgSentenceLength");
 const readingTimeEl = document.getElementById("readingTime");
+const letterCountEl = document.getElementById("letterCount");
+const digitCountEl = document.getElementById("digitCount");
+const spaceCountEl = document.getElementById("spaceCount");
+const punctuationCountEl = document.getElementById("punctuationCount");
 const verifyBtn = document.getElementById("verifyBtn");
 const copyBtn = document.getElementById("copyBtn");
 const clearBtn = document.getElementById("clearBtn");
@@ -50,6 +54,10 @@ function getCounts(text) {
 
   const avgSentenceLength =
     sentences === 0 ? 0 : (words / sentences).toFixed(2);
+  const letters = (text.match(/[A-Za-z]/g) || []).length;
+  const digits = (text.match(/[0-9]/g) || []).length;
+  const spaces = (text.match(/\s/g) || []).length;
+  const punctuation = (text.match(/[\p{P}]/gu) || []).length;
   const readingTime = words === 0 ? "0 min" : `${Math.ceil(words / 200)} min`;
 
   return {
@@ -60,6 +68,10 @@ function getCounts(text) {
     avgWordLength,
     avgSentenceLength,
     readingTime,
+    letters,
+    digits,
+    spaces,
+    punctuation,
   };
 }
 
@@ -238,15 +250,27 @@ function updateCounts() {
     avgWordLength,
     avgSentenceLength,
     readingTime,
+    letters,
+    digits,
+    spaces,
+    punctuation,
   } = getCounts(text);
   const curWords = parseInt(wordCountEl.textContent) || 0;
   const curChars = parseInt(charCountEl.textContent) || 0;
   const curSentences = parseInt(sentenceCountEl.textContent) || 0;
   const curParagraphs = parseInt(paragraphCountEl.textContent) || 0;
+  const curLetters = parseInt(letterCountEl.textContent) || 0;
+  const curDigits = parseInt(digitCountEl.textContent) || 0;
+  const curSpaces = parseInt(spaceCountEl.textContent) || 0;
+  const curPunctuation = parseInt(punctuationCountEl.textContent) || 0;
   animateValue(wordCountEl, curWords, words, 300);
   animateValue(charCountEl, curChars, chars, 300);
   animateValue(sentenceCountEl, curSentences, sentences, 300);
   animateValue(paragraphCountEl, curParagraphs, paragraphs, 300);
+  animateValue(letterCountEl, curLetters, letters, 300);
+  animateValue(digitCountEl, curDigits, digits, 300);
+  animateValue(spaceCountEl, curSpaces, spaces, 300);
+  animateValue(punctuationCountEl, curPunctuation, punctuation, 300);
   avgWordLengthEl.textContent = avgWordLength;
   avgSentenceLengthEl.textContent = avgSentenceLength;
   readingTimeEl.textContent = readingTime;
@@ -344,6 +368,36 @@ exportStatsJsonBtn &&
   exportStatsJsonBtn.addEventListener("click", exportStatsJson);
 exportStatsCsvBtn &&
   exportStatsCsvBtn.addEventListener("click", exportStatsCsv);
+
+document.addEventListener("keydown", (event) => {
+  if (!event.ctrlKey || !event.shiftKey) return;
+  switch (event.key.toLowerCase()) {
+    case "u":
+      transformText("upper");
+      event.preventDefault();
+      break;
+    case "l":
+      transformText("lower");
+      event.preventDefault();
+      break;
+    case "t":
+      transformText("title");
+      event.preventDefault();
+      break;
+    case "f":
+      renderFreq(getTopWords(input.value || "", 10));
+      event.preventDefault();
+      break;
+    case "e":
+      exportText();
+      event.preventDefault();
+      break;
+    case "s":
+      exportOptions.classList.toggle("show");
+      event.preventDefault();
+      break;
+  }
+});
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {

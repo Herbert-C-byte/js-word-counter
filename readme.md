@@ -6,6 +6,8 @@ A small, responsive word & character counter with live updates, accessible marku
 
 - Live word and character counts (debounced for performance)
 - Text statistics: sentences, paragraphs, average word length, average sentence length
+- Character breakdown: letters, digits, spaces, punctuation
+- Keyboard shortcuts for transforms, export, and analysis
 - Reading time estimate based on 200 words per minute
 - Animated counters for smooth updates
 - Autosizing textarea with max-height based on viewport
@@ -33,6 +35,7 @@ python -m http.server 8000
 - `Count` — manually update the stats (also updates live while typing)
 - `Copy` — copies textarea contents to clipboard with feedback
 - `Clear` — clears the textarea and resets counts
+- Keyboard shortcuts: `Ctrl+Shift+U` upper, `Ctrl+Shift+L` lower, `Ctrl+Shift+T` title case, `Ctrl+Shift+F` top words, `Ctrl+Shift+E` export text, `Ctrl+Shift+S` export stats
 
 ## Development
 
